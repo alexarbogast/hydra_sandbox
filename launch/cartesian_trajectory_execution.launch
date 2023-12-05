@@ -1,0 +1,16 @@
+<launch>
+  <!-- GDB functionality -->
+  <arg name="debug" default="false" />
+  <arg unless="$(arg debug)" name="launch_prefix" value=""/>
+  <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args"/>
+
+  <include file="$(find hydra_bringup)/launch/hydra_system_sim.launch">
+    <arg name="rviz" value="true"/>
+  </include>
+
+  <!-- Load Cartesian planning server -->
+  <rosparam file="$(find hydra_sandbox)/config/cartesian_planners.yaml" command="load"/>
+  <node ns="rob1" pkg="cartesian_planning_server" name="cartesian_planning_server" type="cartesian_planning_server"/>
+  <node ns="rob2" pkg="cartesian_planning_server" name="cartesian_planning_server" type="cartesian_planning_server"/>
+  
+</launch>
