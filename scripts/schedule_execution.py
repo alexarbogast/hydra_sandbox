@@ -16,16 +16,17 @@ from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryG
 from trajectory_msgs.msg import JointTrajectoryPoint
 
 # pyrobopath
-from pyrobopath.toolpath import Toolpath, Contour, visualize_toolpath_projection
+from pyrobopath.toolpath import Toolpath, Contour
 from pyrobopath.collision_detection import FCLRobotBBCollisionModel
+from pyrobopath.scheduling import DependencyGraph
 from pyrobopath.toolpath_scheduling import *
 
 from cartesian_planning_server.srv import *
 
 NAME = "schedule_execution_demo"
 HOME_POSITION = [0.0, 0.53, 0.47, 0.0, -1.0, 0.0]
-TRAVEL_VEL = 0.300
-CONTOUR_VEL = 0.200
+TRAVEL_VEL = 0.500
+CONTOUR_VEL = 0.300
 
 
 class Materials(Enum):
@@ -61,6 +62,7 @@ def create_example_toolpath() -> Toolpath:
     # Layer 1
     path1 = raster_rect([-0.150, -0.150, 1.0], 0.3, 0.020, 7)
     path2 = raster_rect([-0.150, 0.01, 1.0], 0.3, 0.020, 7)
+    path2.reverse()
 
     # Layer 2
     path3 = raster_rect([-0.150, 0.01, 1.02], 0.14, 0.020, 7)
@@ -84,13 +86,25 @@ def create_example_toolpath() -> Toolpath:
     c5 = Contour(path5, tool=Materials.MATERIAL_A)
     c6 = Contour(path6, tool=Materials.MATERIAL_B)
     c7 = Contour(path7, tool=Materials.MATERIAL_A)
-    c8 = Contour(path8, tool=Materials.MATERIAL_A)
-    c9 = Contour(path9, tool=Materials.MATERIAL_B)
+    c8 = Contour(path8, tool=Materials.MATERIAL_B)
+    c9 = Contour(path9, tool=Materials.MATERIAL_A)
 
     toolpath = Toolpath()
     toolpath.contours = [c1, c2, c3, c4, c5, c6, c7, c8, c9]
-    visualize_toolpath_projection(toolpath)
-    return toolpath
+    
+    dg = DependencyGraph()
+    dg.add_node("start")
+    dg.add_node(0, ["start"])
+    dg.add_node(1, ["start"])
+    dg.add_node(2, [0])
+    dg.add_node(3, [0, 1])
+    dg.add_node(4, [1])
+    dg.add_node(5, [2, 3])
+    dg.add_node(6, [2, 3, 4])
+    dg.add_node(7, [2, 4])
+    dg.add_node(8, [3, 4])
+
+    return toolpath, dg
 
 
 def transform_tf_to_np(transform):
@@ -131,7 +145,7 @@ class AgentExecutionContext(object):
         self.agent.home_position = self.eef_to_world[:3, 3]
         self.agent.capabilities = capabilities
         self.agent.collision_model = FCLRobotBBCollisionModel(
-            0.50, 0.2, 2.0, self.agent.base_frame_position
+            0.50, 0.1, 2.0, self.agent.base_frame_position
         )
 
         self.planning_client = rospy.ServiceProxy(
@@ -236,7 +250,7 @@ class ScheduleExecutionDemo(object):
 
     def create_and_plan_toolpath(self):
         """create and plan toolpath schedule"""
-        toolpath = create_example_toolpath()
+        toolpath, _ = create_example_toolpath()
         dg = create_dependency_graph_by_layers(toolpath)
 
         rospy.loginfo(
@@ -245,13 +259,13 @@ class ScheduleExecutionDemo(object):
         schedule = self._planner.plan(toolpath, dg, self._options)
         rospy.loginfo(f"\n{(50 * '#')}\nFound Toolpath Plan!\n{(50 * '#')}\n")
 
-        # animate_multi_agent_toolpath_full(
-        #    toolpath,
-        #    schedule,
-        #    self._planner._agent_models,
-        #    0.01,
-        #    limits=((-5, 5), (-4, 4)),
-        # )
+        #animate_multi_agent_toolpath_full(
+        #   toolpath,
+        #   schedule,
+        #   self._planner._agent_models,
+        #   0.01,
+        #   limits=((-5, 5), (-4, 4)),
+        #)
         return schedule
 
     def plan_multi_agent_schedule(self, schedule: MultiAgentToolpathSchedule):
@@ -325,5 +339,5 @@ if __name__ == "__main__":
     try:
         demo = ScheduleExecutionDemo()
         demo.run()
-    except rospy.ROSInternalException:
+    except rospy.ROSInteruptException:
         pass
