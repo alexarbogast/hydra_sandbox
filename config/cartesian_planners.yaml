@@ -29,3 +29,19 @@ rob2:
       - rob2_joint_4
       - rob2_joint_5
       - rob2_joint_6
+
+rob3:
+  cartesian_planning_server:
+    error_threshold: 0.0005
+    max_eef_step: 0.001
+    max_step_iterations: 200
+    
+    robot_base_link: rob3_base_link
+    end_effector_link: rob3_typhoon_extruder_tcp
+    joints:
+      - rob3_joint_1
+      - rob3_joint_2
+      - rob3_joint_3
+      - rob3_joint_4
+      - rob3_joint_5
+      - rob3_joint_6

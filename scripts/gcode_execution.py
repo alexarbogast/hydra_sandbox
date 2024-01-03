@@ -9,6 +9,7 @@ from pyrobopath.toolpath_scheduling import animate_multi_agent_toolpath_full
 NAME = "gcode_execution_demo"
 GCODE_PATH = "/resources/multi_tool_square_reprap.gcode"
 GCODE_PATH = "/resources/multi_tool_demo.gcode"
+GCODE_PATH = "/resources/three_mat_complex.gcode"
 
 class GcodeExecutionDemo:
     def __init__(self):
