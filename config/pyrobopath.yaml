@@ -20,8 +20,8 @@ rob1:
     - 0
 
   collision:
-    width: 0.20
-    length: 0.3
+    width: 0.10
+    length: 0.5
     height: 2.0
 
 rob2:
@@ -39,6 +39,6 @@ rob2:
     - 1
 
   collision:
-    width: 0.20
-    length: 0.3
+    width: 0.10
+    length: 0.5
     height: 2.0
