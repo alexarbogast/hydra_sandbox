@@ -21,7 +21,7 @@ rob1:
     - 0
 
   collision:
-    width: 0.20
+    width: 0.10
     length: 0.3
     height: 2.0
 
@@ -40,7 +40,7 @@ rob2:
     - 1
 
   collision:
-    width: 0.20
+    width: 0.10
     length: 0.3
     height: 2.0
 
@@ -56,9 +56,9 @@ rob3:
   home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]
 
   capabilities:
-    - 2
+    - 1
 
   collision:
-    width: 0.20
+    width: 0.10
     length: 0.3
     height: 2.0

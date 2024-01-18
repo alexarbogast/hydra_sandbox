@@ -6,6 +6,7 @@
 
   <include file="$(find hydra_bringup)/launch/hydra_system_sim.launch">
     <arg name="rviz" value="true"/>
+    <arg name="rvizconfig" value="$(find hydra_sandbox)/config/hydra_sandbox.rviz"/>
   </include>
 
   <!-- Load Cartesian planning server -->
