@@ -1,17 +1,25 @@
 <launch>
+  <arg name="sim"   default="true"  doc="Should sim hardware be launched?"/>
+  <arg name="rviz"  default="true" doc="Should RVIz be launched?"/>
+
   <!-- GDB functionality -->
   <arg name="debug" default="false" />
   <arg unless="$(arg debug)" name="launch_prefix" value=""/>
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args"/>
 
-  <include file="$(find hydra_bringup)/launch/hydra_system_sim.launch">
-    <arg name="rviz" value="true"/>
-    <arg name="rvizconfig" value="$(find hydra_sandbox)/config/hydra_sandbox.rviz"/>
-  </include>
+  <group if="$(arg sim)">
+    <include file="$(find hydra_bringup)/launch/hydra_system_sim.launch">
+      <arg name="rviz" value="false"/>
+    </include> 
+  </group>
+
+  <group if="$(arg rviz)">
+    <include file="$(find hydra_bringup)/launch/hydra_visualization.launch">
+      <arg name="load_robot_description" value="true"/>
+      <arg name="rvizconfig" value="$(find hydra_sandbox)/config/hydra_sandbox.rviz"/>
+    </include>
+  </group>
 
   <!-- Load Cartesian planning server -->
-  <rosparam file="$(find hydra_sandbox)/config/cartesian_planners.yaml" command="load"/>
-  <node ns="rob1" pkg="cartesian_planning_server" name="cartesian_planning_server" type="cartesian_planning_server" output="screen"/>
-  <node ns="rob2" pkg="cartesian_planning_server" name="cartesian_planning_server" type="cartesian_planning_server" output="screen"/>
-  
+  <include file="$(find hydra_sandbox)/launch/cartesian_planning_servers.launch"/>
 </launch>

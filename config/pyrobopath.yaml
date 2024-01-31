@@ -10,8 +10,8 @@ rob1:
   eef_frame: rob1_typhoon_extruder_tcp
   task_frame: work_object
 
-  velocity: 0.300
-  travel_velocity: 0.400
+  velocity: 0.150
+  travel_velocity: 0.200
 
   eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
   home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]
@@ -29,8 +29,8 @@ rob2:
   eef_frame: rob2_typhoon_extruder_tcp
   task_frame: work_object
 
-  velocity: 0.300
-  travel_velocity: 0.400
+  velocity: 0.150
+  travel_velocity: 0.200
 
   eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
   home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]

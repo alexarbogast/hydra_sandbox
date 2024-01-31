@@ -1,6 +1,5 @@
 import numpy as np
 import quaternion
-from copy import copy
 
 import rospy
 import actionlib
@@ -12,14 +11,14 @@ from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Transform
 from trajectory_msgs.msg import JointTrajectoryPoint
 
-from cartesian_planning_server.srv import *
-from copy import deepcopy
+from cartesian_planning_msgs.msg import ErrorCodes
+from cartesian_planning_msgs.srv import *
 
 
-HOME_POSITION = [0.0, 0.53, 0.47, 0.0, -1.0, 0.0]
 NAME = "cartesian_trajectory_execution"
-VEL = 0.500
-
+HOME_POSITION = [0.0, np.deg2rad(21), np.deg2rad(45), 0.0, np.deg2rad(-66), 0.0]
+VEL = 0.200
+EEF_ROTATION = [0.0, 0.0, 1.0, 0.0]
 
 def transform_tf_to_np(transform: Transform):
     p = transform.translation
@@ -56,11 +55,11 @@ class CartesianPlanningDemo(object):
 
         # cartesian planning clients
         self._rob1_planning_client = rospy.ServiceProxy(
-            "robot1/cartesian_planning_server/plan_cartesian_trajectory",
+            "rob1/cartesian_planning_server/plan_cartesian_trajectory",
             PlanCartesianTrajectory,
         )
         self._rob2_planning_client = rospy.ServiceProxy(
-            "robot2/cartesian_planning_server/plan_cartesian_trajectory",
+            "rob2/cartesian_planning_server/plan_cartesian_trajectory",
             PlanCartesianTrajectory,
         )
 
@@ -78,7 +77,7 @@ class CartesianPlanningDemo(object):
         self._rob1_planning_client.wait_for_service()
         self._rob2_planning_client.wait_for_service()
 
-        rospy.loginfo("Waiting for follow_trajectory_action server...")
+        rospy.loginfo("Waiting for follow_trajectory_action servers...")
         self._rob1_action_client.wait_for_server()
         self._rob2_action_client.wait_for_server()
 
@@ -107,22 +106,36 @@ class CartesianPlanningDemo(object):
 
         # set velocities
         req1.velocity, req2.velocity = VEL, VEL
-        resp1, resp2 = None, None
+        resp1 = PlanCartesianTrajectoryResponse()
+        resp2 = PlanCartesianTrajectoryResponse()
         try:
             resp1 = self._rob1_planning_client(req1)
             resp2 = self._rob2_planning_client(req2)
         except rospy.ServiceException as e:
             rospy.logerr("Failed to plan cartesian trajectory: " + str(e))
             return
+        
+        # send controller commands if planning succeeds 
+        if (resp1.error_code.val == ErrorCodes.SUCCESS and 
+            resp2.error_code.val == ErrorCodes.SUCCESS):
+            # create goals
+            goal1 = control_msgs.msg.FollowJointTrajectoryGoal(trajectory = resp1.trajectory)
+            goal2 = control_msgs.msg.FollowJointTrajectoryGoal(trajectory = resp2.trajectory)
+            self._rob1_action_client.send_goal(goal1)
+            self._rob2_action_client.send_goal(goal2)
 
-        # create goals
-        goal1 = control_msgs.msg.FollowJointTrajectoryGoal()
-        goal2 = control_msgs.msg.FollowJointTrajectoryGoal()
-        goal1.trajectory = resp1.trajectory
-        goal2.trajectory = resp2.trajectory
-        self._rob1_action_client.send_goal(goal1)
-        self._rob2_action_client.send_goal(goal2)
-        self.move_home()
+            self._rob1_action_client.wait_for_result()
+            self._rob2_action_client.wait_for_result()
+
+            self.move_home()
+        else:
+            rospy.logerr(
+                "Failed to plan Cartesian trajectory. "
+                + "Planning service returned with ERROR_CODES: "
+                + f"rob1: {resp1.error_code.val} \nrob2: {resp2.error_code.val}"
+            )
+            return False
+
 
     def move_home(self):
         start_state1 = rospy.wait_for_message("/rob1/joint_states", JointState)
@@ -164,10 +177,13 @@ class CartesianPlanningDemo(object):
             pose.position.z = point[2]
 
             theta = np.arctan2(point[1], point[0])
-            pose.orientation.w = np.cos(theta / 2)
-            pose.orientation.x = 0.0
-            pose.orientation.y = 0.0
-            pose.orientation.z = np.sin(theta / 2)
+            q = np.quaternion(np.cos(theta / 2), 0.0, 0.0, np.sin(theta / 2))
+            rot = q * np.quaternion(*EEF_ROTATION)
+            
+            pose.orientation.w = rot.w
+            pose.orientation.x = rot.x
+            pose.orientation.y = rot.y
+            pose.orientation.z = rot.z
             req.path.append(pose)
         return req
 

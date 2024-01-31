@@ -2,7 +2,6 @@ import numpy as np
 import quaternion
 from copy import copy
 from enum import Enum
-from dataclasses import dataclass
 from collections import defaultdict
 
 # ros
@@ -21,12 +20,14 @@ from pyrobopath.collision_detection import FCLRobotBBCollisionModel
 from pyrobopath.scheduling import DependencyGraph
 from pyrobopath.toolpath_scheduling import *
 
-from cartesian_planning_server.srv import *
+from cartesian_planning_msgs.srv import *
 
 NAME = "schedule_execution_demo"
-HOME_POSITION = [0.0, 0.53, 0.47, 0.0, -1.0, 0.0]
+HOME_POSITION = [0.0, np.deg2rad(21), np.deg2rad(45), 0.0, np.deg2rad(-66), 0.0]
 TRAVEL_VEL = 0.500
 CONTOUR_VEL = 0.300
+EEF = "typhoon_extruder_tcp"
+EEF_ROTATION = [0.0, 0.0, 1.0, 0.0]
 
 
 class Materials(Enum):
@@ -131,7 +132,7 @@ class AgentExecutionContext(object):
                 f"{self.id}_base_link", "world", rospy.Time()
             )
             eef_to_world = tf_buffer.lookup_transform(
-                f"world", f"{self.id}_flange", rospy.Time()
+                f"world", f"{self.id}_{EEF}", rospy.Time()
             )
         except:
             rospy.logfatal(f"Failed to find transforms for agent {id}")
@@ -144,6 +145,8 @@ class AgentExecutionContext(object):
         self.agent.base_frame_position = self.base_to_world[:3, 3]
         self.agent.home_position = self.eef_to_world[:3, 3]
         self.agent.capabilities = capabilities
+        self.agent.velocity = CONTOUR_VEL
+        self.agent.travel_velocity = TRAVEL_VEL
         self.agent.collision_model = FCLRobotBBCollisionModel(
             0.50, 0.1, 2.0, self.agent.base_frame_position
         )
@@ -160,7 +163,7 @@ class AgentExecutionContext(object):
     def update_home_tf(self, tf_buffer):
         try:
             eef_to_world = tf_buffer.lookup_transform(
-                f"world", f"{self.id}_flange", rospy.Time()
+                f"world", f"{self.id}_typhoon_extruder_tcp", rospy.Time()
             )
         except:
             rospy.logfatal(f"Failed to find transforms for agent {self.id}")
@@ -199,8 +202,6 @@ class ScheduleExecutionDemo(object):
         agent_models = {id: context.agent for id, context in self.contexts.items()}
         self._planner = MultiAgentToolpathPlanner(agent_models)
         self._options = PlanningOptions(
-            travel_velocity=TRAVEL_VEL,
-            contour_velocity=CONTOUR_VEL,
             retract_height=0.1,
             collision_offset=1.0,
             collision_gap_threshold=0.003,
@@ -209,6 +210,7 @@ class ScheduleExecutionDemo(object):
     def run(self):
         """move all robots home"""
         self.move_home()
+        rospy.sleep(3)
         for context in self.contexts.values():
             context.update_home_tf(self.tf_buffer)
         self.initialize_pyrobopath()
@@ -259,13 +261,13 @@ class ScheduleExecutionDemo(object):
         schedule = self._planner.plan(toolpath, dg, self._options)
         rospy.loginfo(f"\n{(50 * '#')}\nFound Toolpath Plan!\n{(50 * '#')}\n")
 
-        #animate_multi_agent_toolpath_full(
-        #   toolpath,
-        #   schedule,
-        #   self._planner._agent_models,
-        #   0.01,
-        #   limits=((-5, 5), (-4, 4)),
-        #)
+        animate_multi_agent_toolpath_full(
+           toolpath,
+           schedule,
+           self._planner._agent_models,
+           0.01,
+           limits=((-0.5, 0.5), (-1, 1)),
+        )
         return schedule
 
     def plan_multi_agent_schedule(self, schedule: MultiAgentToolpathSchedule):
@@ -304,10 +306,13 @@ class ScheduleExecutionDemo(object):
             pose.position.z = point[2]
 
             theta = np.arctan2(point[1], point[0])
-            pose.orientation.w = np.cos(theta / 2)
-            pose.orientation.x = 0.0
-            pose.orientation.y = 0.0
-            pose.orientation.z = np.sin(theta / 2)
+            q = np.quaternion(np.cos(theta / 2), 0.0, 0.0, np.sin(theta / 2))
+            rot = q * np.quaternion(*EEF_ROTATION)
+            
+            pose.orientation.w = rot.w
+            pose.orientation.x = rot.x
+            pose.orientation.y = rot.y
+            pose.orientation.z = rot.z
             req.path.append(pose)
 
         req.velocity = CONTOUR_VEL if isinstance(event, ContourEvent) else TRAVEL_VEL
@@ -339,5 +344,5 @@ if __name__ == "__main__":
     try:
         demo = ScheduleExecutionDemo()
         demo.run()
-    except rospy.ROSInteruptException:
+    except rospy.ROSInterruptException:
         pass
