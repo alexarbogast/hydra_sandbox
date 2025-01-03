@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   control_msgs
   actionlib
   cartesian_planning_server
-  pyrobopath
+  pyrobopath_ros
 )
 
 catkin_package(CATKIN_DEPENDS
@@ -23,7 +23,7 @@ catkin_package(CATKIN_DEPENDS
   control_msgs
   actionlib
   cartesian_planning_server
-  pyrobopath
+  pyrobopath_ros
 )
 
 include_directories(${catkin_INCLUDE_DIRS})

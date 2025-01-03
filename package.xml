@@ -23,6 +23,6 @@
   <depend>control_msgs</depend>
   <depend>actionlib</depend>
   <depend>cartesian_planning_server</depend>
-  <depend>pyrobopath</depend>
+  <depend>pyrobopath_ros</depend>
 
 </package>
