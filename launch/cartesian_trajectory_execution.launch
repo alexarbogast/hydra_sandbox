@@ -1,6 +1,8 @@
+<?xml version="1.0"?>
 <launch>
   <arg name="sim"   default="true"  doc="Should sim hardware be launched?"/>
   <arg name="rviz"  default="true" doc="Should RVIz be launched?"/>
+  <arg name="tool" default="marker_tool" doc="One of 'typhoon_extruder', 'marker_tool', 'tool0'"/>
 
   <!-- GDB functionality -->
   <arg name="debug" default="false" />
@@ -10,6 +12,7 @@
   <group if="$(arg sim)">
     <include file="$(find hydra_bringup)/launch/hydra_system_sim.launch">
       <arg name="rviz" value="false"/>
+      <arg name="tool" value="$(arg tool)"/>
     </include> 
   </group>
 
@@ -17,6 +20,7 @@
     <include file="$(find hydra_bringup)/launch/hydra_visualization.launch">
       <arg name="load_robot_description" value="true"/>
       <arg name="rvizconfig" value="$(find hydra_sandbox)/config/hydra_sandbox.rviz"/>
+      <arg name="tool" value="$(arg tool)"/>
     </include>
   </group>
 

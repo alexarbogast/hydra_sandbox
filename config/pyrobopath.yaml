@@ -2,16 +2,16 @@ namespaces:
   - 'rob1'
   - 'rob2'
 
-retract_height: 0.050
+retract_height: 0.075
 collision_gap_threshold: 0.003
 
 rob1:
   base_frame: rob1_base
-  eef_frame: rob1_typhoon_extruder_tcp
+  eef_frame: rob1_marker_tool_tcp
   task_frame: work_object
 
-  velocity: 0.150
-  travel_velocity: 0.200
+  velocity: 0.50
+  travel_velocity: 0.150
 
   eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
   home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]
@@ -26,11 +26,11 @@ rob1:
 
 rob2:
   base_frame: rob2_base
-  eef_frame: rob2_typhoon_extruder_tcp
+  eef_frame: rob2_marker_tool_tcp
   task_frame: work_object
 
-  velocity: 0.150
-  travel_velocity: 0.200
+  velocity: 0.050
+  travel_velocity: 0.150
 
   eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
   home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]
