@@ -25,6 +25,8 @@ rob1:
     width: 0.17
     height: 0.5
 
+    offset: [0.02, 0.0, -0.2]
+
 rob2:
   base_frame: rob2_base
   eef_frame: rob2_marker_tool_tcp
@@ -44,3 +46,5 @@ rob2:
     length: 0.5
     width: 0.17
     height: 0.5
+
+    offset: [0.02, 0.0, -0.2]
