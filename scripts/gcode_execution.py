@@ -6,6 +6,7 @@ from pyrobopath_ros import ScheduleExecution, toolpath_from_gcode
 from pyrobopath.toolpath_scheduling import animate_multi_agent_toolpath_full
 
 NAME = "gcode_execution_demo"
+
 # GCODE_PATH = "/resources/multi_tool_square_reprap.gcode"
 # GCODE_PATH = "/resources/multi_tool_demo.gcode"
 GCODE_PATH = "/resources/GT_Logo.gcode"
@@ -27,12 +28,12 @@ class GcodeExecutionDemo:
         # schedule toolpath
         self.sched_exec.schedule_toolpath(toolpath)
 
-        #animate_multi_agent_toolpath_full(
-        #    toolpath,
-        #    self.sched_exec._schedule,
-        #    self.sched_exec.agent_models,
-        #    limits=LIMITS,
-        #)
+        # animate_multi_agent_toolpath_full(
+        #     toolpath,
+        #     self.sched_exec._schedule,
+        #     self.sched_exec.agent_models,
+        #     limits=LIMITS,
+        # )
 
         # execute schedule
         self.sched_exec.execute_schedule()
@@ -47,7 +48,8 @@ class GcodeExecutionDemo:
 
     def filter_toolpath(self, toolpath: Toolpath):
         toolpath.scale(0.001)
-        toolpath.contours = toolpath.contours[:5]
+        toolpath.scale(0.50) # for GT logo
+        toolpath.contours = toolpath.contours[:14]
 
 
 if __name__ == "__main__":

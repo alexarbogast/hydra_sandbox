@@ -1,13 +1,15 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 70
+    Help Height: 85
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.5941176414489746
-    Tree Height: 383
+    Tree Height: 362
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -110,6 +112,15 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        rob1_marker_tool:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob1_marker_tool_tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         rob1_pedestal:
           Alpha: 1
           Show Axes: false
@@ -125,15 +136,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         rob1_tool0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rob1_typhoon_extruder:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rob1_typhoon_extruder_tcp:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -180,6 +182,15 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        rob2_marker_tool:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rob2_marker_tool_tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         rob2_pedestal:
           Alpha: 1
           Show Axes: false
@@ -198,19 +209,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        rob2_typhoon_extruder:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rob2_typhoon_extruder_tcp:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         work_object:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         world:
           Alpha: 1
           Show Axes: false
@@ -248,6 +251,10 @@ Visualization Manager:
           Value: false
         rob1_link_6:
           Value: false
+        rob1_marker_tool:
+          Value: false
+        rob1_marker_tool_tcp:
+          Value: false
         rob1_pedestal:
           Value: true
         rob1_pedestal_base:
@@ -256,10 +263,6 @@ Visualization Manager:
           Value: false
         rob1_tool0:
           Value: false
-        rob1_typhoon_extruder:
-          Value: false
-        rob1_typhoon_extruder_tcp:
-          Value: true
         rob2_base:
           Value: false
         rob2_base_link:
@@ -278,6 +281,10 @@ Visualization Manager:
           Value: false
         rob2_link_6:
           Value: false
+        rob2_marker_tool:
+          Value: false
+        rob2_marker_tool_tcp:
+          Value: false
         rob2_pedestal:
           Value: true
         rob2_pedestal_base:
@@ -286,10 +293,6 @@ Visualization Manager:
           Value: false
         rob2_tool0:
           Value: false
-        rob2_typhoon_extruder:
-          Value: false
-        rob2_typhoon_extruder_tcp:
-          Value: true
         work_object:
           Value: true
         world:
@@ -303,44 +306,46 @@ Visualization Manager:
       Tree:
         world:
           hydra_base:
-            rob1_pedestal_base:
-              rob1_pedestal:
-                rob1_pedestal_top:
-                  rob1_base_link:
-                    rob1_base:
-                      {}
-                    rob1_link_1:
-                      rob1_link_2:
-                        rob1_link_3:
-                          rob1_link_4:
-                            rob1_link_5:
-                              rob1_link_6:
-                                rob1_flange:
-                                  rob1_tool0:
-                                    {}
-                                  rob1_typhoon_extruder:
-                                    rob1_typhoon_extruder_tcp:
-                                      {}
-            rob2_pedestal_base:
-              rob2_pedestal:
-                rob2_pedestal_top:
-                  rob2_base_link:
-                    rob2_base:
-                      {}
-                    rob2_link_1:
-                      rob2_link_2:
-                        rob2_link_3:
-                          rob2_link_4:
-                            rob2_link_5:
-                              rob2_link_6:
-                                rob2_flange:
-                                  rob2_tool0:
-                                    {}
-                                  rob2_typhoon_extruder:
-                                    rob2_typhoon_extruder_tcp:
-                                      {}
-          work_object:
-            {}
+            rob1_base_link:
+              rob1_base:
+                {}
+              rob1_link_1:
+                rob1_link_2:
+                  rob1_link_3:
+                    rob1_link_4:
+                      rob1_link_5:
+                        rob1_link_6:
+                          rob1_flange:
+                            rob1_marker_tool:
+                              rob1_marker_tool_tcp:
+                                {}
+                            rob1_tool0:
+                              {}
+              rob1_pedestal_top:
+                rob1_pedestal:
+                  rob1_pedestal_base:
+                    {}
+            rob2_base_link:
+              rob2_base:
+                {}
+              rob2_link_1:
+                rob2_link_2:
+                  rob2_link_3:
+                    rob2_link_4:
+                      rob2_link_5:
+                        rob2_link_6:
+                          rob2_flange:
+                            rob2_marker_tool:
+                              rob2_marker_tool_tcp:
+                                {}
+                            rob2_tool0:
+                              {}
+              rob2_pedestal_top:
+                rob2_pedestal:
+                  rob2_pedestal_base:
+                    {}
+            work_object:
+              {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -348,7 +353,7 @@ Visualization Manager:
       Marker Topic: /rviz_visual_tools
       Name: MarkerArray
       Namespaces:
-        Path: true
+        {}
       Queue Size: 50000
       Value: true
   Enabled: true
@@ -379,7 +384,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.4422848224639893
+      Distance: 2.8584609031677246
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -387,27 +392,27 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.1645854115486145
-        Y: -0.022501841187477112
-        Z: 0.7394303679466248
+        X: 0.1717236340045929
+        Y: -0.10058823227882385
+        Z: 0.6681647896766663
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.26039814949035645
+      Pitch: 0.44039806723594666
       Target Frame: <Fixed Frame>
-      Yaw: 3.465379238128662
+      Yaw: 3.675379991531372
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1043
+  Height: 1080
   Hide Left Dock: false
   Hide Right Dock: true
   OpenGcode:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd000000040000000000000183000003bdfc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003b00000200000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000012004f00700065006e00470063006f00640065010000003b000003bd0000017d00ffffff000000010000010f0000035afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000035a000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009c60000003efc0100000002fb0000000800540069006d00650000000000000009c60000035c00fffffffb0000000800540069006d00650100000000000004500000000000000000000005f7000003bd00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000183000003d6fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006b00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000004400000200000000eb00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000012004f00700065006e00470063006f006400650100000044000003d6000000eb00ffffff000000010000010f0000035afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000035a000000b900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009c60000003efc0100000002fb0000000800540069006d00650000000000000009c60000040900fffffffb0000000800540069006d0065010000000000000450000000000000000000000876000003d600000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -416,6 +421,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: true
-  Width: 1920
-  X: 0
+  Width: 2560
+  X: 1920
   Y: 0
