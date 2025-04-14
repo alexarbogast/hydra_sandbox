@@ -32,6 +32,7 @@ catkin_install_python(PROGRAMS
   scripts/cartesian_trajectory_execution.py
   scripts/schedule_execution.py
   scripts/gcode_execution.py
+  scripts/visualize_collision_geometry.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
