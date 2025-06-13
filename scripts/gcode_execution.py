@@ -1,14 +1,15 @@
 import rospy
 import rospkg
 
-from pyrobopath.toolpath import *
-from pyrobopath_ros import ScheduleExecution, toolpath_from_gcode
+from pyrobopath.toolpath import Toolpath
+from pyrobopath.toolpath.preprocessing import *
 from pyrobopath.toolpath_scheduling import animate_multi_agent_toolpath_full
+from pyrobopath_ros import ScheduleExecution, toolpath_from_gcode
 
 NAME = "gcode_execution_demo"
 
 PART = "GT_Logo"
-Z_HEIGHT = -0.005 # mm
+Z_HEIGHT = -0.005  # mm
 
 filepaths = {
     "multi_tool_square": "/resources/multi_tool_square.gcode",
@@ -51,11 +52,12 @@ class GcodeExecutionDemo:
         rospack = rospkg.RosPack()
         filepath = rospack.get_path("hydra_sandbox") + filepaths[PART]
         toolpath = toolpath_from_gcode(filepath)
-        self.filter_toolpath(toolpath)
+        self.preprocess_toolpath(toolpath)
         return toolpath
 
-    def filter_toolpath(self, toolpath: Toolpath):
-        toolpath.scale(0.001)  # to meters
+    def preprocess_toolpath(self, toolpath: Toolpath):
+        preprocessor = ToolpathPreprocessor()
+        preprocessor.add_step(ScalingStep(0.001))  # to meters
 
         # extract desired layers
         if PART == "multi_tool_square":
@@ -63,16 +65,15 @@ class GcodeExecutionDemo:
         elif PART == "multi_tool_demo":
             toolpath.contours = toolpath.contours[:29]
         elif PART == "GT_Logo":
-            # toolpath.scale(0.9)
             toolpath.contours = toolpath.contours[:14]
         elif PART == "gear":
             toolpath.contours = toolpath.contours[:100]
         elif PART == "mona_lisa":
-            toolpath.scale(0.9)
+            preprocessor.add_step(ScalingStep(0.9))
 
         # adjust z height
-        for c in toolpath.contours:
-            c.path += np.array([0.0, 0.0, Z_HEIGHT])
+        preprocessor.add_step(TranslateStep([0.0, 0.0, Z_HEIGHT]))
+        preprocessor.process(toolpath)
 
 
 if __name__ == "__main__":
