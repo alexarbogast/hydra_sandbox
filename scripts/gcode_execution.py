@@ -17,6 +17,7 @@ filepaths = {
     "GT_Logo": "/resources/GT_Logo.gcode",
     "gear": "/resources/gear.gcode",
     "mona_lisa": "/resources/mona_lisa.gcode",
+    "foresight_logo": "/resources/foresight_logo.gcode",
 }
 
 
@@ -61,15 +62,17 @@ class GcodeExecutionDemo:
 
         # extract desired layers
         if PART == "multi_tool_square":
-            toolpath.contours = toolpath.contours[:12]
+            preprocessor.add_step(LayerRangeStep(0, 1))
         elif PART == "multi_tool_demo":
-            toolpath.contours = toolpath.contours[:29]
+            preprocessor.add_step(LayerRangeStep(0, 1))
         elif PART == "GT_Logo":
-            toolpath.contours = toolpath.contours[:14]
+            preprocessor.add_step(LayerRangeStep(0, 1))
         elif PART == "gear":
-            toolpath.contours = toolpath.contours[:100]
+            preprocessor.add_step(LayerRangeStep(0, 1))
         elif PART == "mona_lisa":
             preprocessor.add_step(ScalingStep(0.9))
+        elif PART == "foresight_logo":
+            preprocessor.add_step(LayerRangeStep(0, 1))
 
         # adjust z height
         preprocessor.add_step(TranslateStep([0.0, 0.0, Z_HEIGHT]))
