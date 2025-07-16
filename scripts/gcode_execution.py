@@ -1,5 +1,6 @@
 import rospy
 import rospkg
+import numpy as np
 
 from pyrobopath.toolpath import Toolpath
 from pyrobopath.toolpath.preprocessing import *
@@ -9,15 +10,17 @@ from pyrobopath_ros import ScheduleExecution, toolpath_from_gcode
 NAME = "gcode_execution_demo"
 
 PART = "GT_Logo"
-Z_HEIGHT = -0.005  # mm
+Z_HEIGHT = 0.000  # mm
 
 filepaths = {
     "multi_tool_square": "/resources/multi_tool_square.gcode",
     "multi_tool_demo": "/resources/multi_tool_demo.gcode",
     "GT_Logo": "/resources/GT_Logo.gcode",
     "gear": "/resources/gear.gcode",
-    "mona_lisa": "/resources/mona_lisa.gcode",
+    "mona_lisa": "/resources/mona_lisa.gcode", # single material
     "foresight_logo": "/resources/foresight_logo.gcode",
+    "part1_2xbracket": "/resources/part1_2Xbracket.gcode", # single material
+    "part6_mold_insert": "/resources/part6_mold_insert.gcode",
 }
 
 
@@ -73,6 +76,10 @@ class GcodeExecutionDemo:
             preprocessor.add_step(ScalingStep(0.9))
         elif PART == "foresight_logo":
             preprocessor.add_step(LayerRangeStep(0, 1))
+        elif PART == "part1_2xbracket":
+            preprocessor.add_step(RotateStep(Rotation.Rz(np.pi / 2)))
+        elif PART == "part6_mold_insert":
+            preprocessor.add_step(RotateStep(Rotation.Rz(np.pi / 2)))
 
         # adjust z height
         preprocessor.add_step(TranslateStep([0.0, 0.0, Z_HEIGHT]))
