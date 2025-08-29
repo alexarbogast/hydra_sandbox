@@ -2,13 +2,13 @@ namespaces:
   - rob1
   - rob2
 
+exec_method: cartesian_planning # 'taskspace_control' or 'cartesian_planning'
 retract_height: 0.010
 collision_gap_threshold: 0.003
 
 rob1:
-  base_frame: rob1_base
+  base_frame: rob1_base_link
   eef_frame: rob1_marker_tool_tcp
-  # eef_frame: rob1_typhoon_extruder_tcp
   task_frame: work_object
 
   velocity: 0.050
@@ -27,9 +27,8 @@ rob1:
     offset: [0.02, 0.0, -0.2]
 
 rob2:
-  base_frame: rob2_base
+  base_frame: rob2_base_link
   eef_frame: rob2_marker_tool_tcp
-  # eef_frame: rob1_typhoon_extruder_tcp
   task_frame: work_object
 
   velocity: 0.050

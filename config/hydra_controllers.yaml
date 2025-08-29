@@ -1,0 +1,37 @@
+rob1:
+  pose_controller:
+    type: taskspace_controllers/PoseController
+    joints:
+      - rob1_joint_1
+      - rob1_joint_2
+      - rob1_joint_3
+      - rob1_joint_4
+      - rob1_joint_5
+      - rob1_joint_6
+
+    base_link: rob1_base_link
+    eef_link: rob1_marker_tool_tcp
+
+    k_position: 500.0
+    k_orient: 10.0
+
+    setpoint_topic: setpoint
+
+rob2:
+  pose_controller:
+    type: taskspace_controllers/PoseController
+    joints:
+      - rob2_joint_1
+      - rob2_joint_2
+      - rob2_joint_3
+      - rob2_joint_4
+      - rob2_joint_5
+      - rob2_joint_6
+
+    base_link: rob2_base_link
+    eef_link: rob2_marker_tool_tcp
+
+    k_position: 500.0
+    k_orient: 10.0
+
+    setpoint_topic: setpoint

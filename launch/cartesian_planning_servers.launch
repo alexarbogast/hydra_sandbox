@@ -1,17 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- Load Cartesian planning server -->
-  <rosparam file="$(find hydra_sandbox)/config/cartesian_planners.yaml" command="load"/>
-  <node ns="rob1" 
-    pkg="cartesian_planning_server" 
-    name="cartesian_planning_server" 
-    type="cartesian_planning_server" 
-    output="screen"
-  />
-  <node ns="rob2" 
-    pkg="cartesian_planning_server" 
-    name="cartesian_planning_server" 
-    type="cartesian_planning_server" 
-    output="screen"
-  />
+  <node ns="rob1" pkg="cartesian_planning_server" name="cartesian_planning_server"
+        type="cartesian_planning_server" output="screen"/>
+  <node ns="rob2" pkg="cartesian_planning_server" name="cartesian_planning_server"
+        type="cartesian_planning_server" output="screen"/>
 </launch>

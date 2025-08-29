@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="sim"   default="true"  doc="Should sim hardware be launched?"/>
-  <arg name="rviz"  default="true" doc="Should RVIz be launched?"/>
+  <arg name="sim"  default="true" doc="Should sim hardware be launched?"/>
+  <arg name="exec" default="planning" doc="Schedule execution type. One of 'control', 'planning'"/>
+  <arg name="rviz" default="true" doc="Should RVIz be launched?"/>
   <arg name="tool" default="marker_tool" doc="One of 'typhoon_extruder', 'marker_tool', 'tool0'"/>
 
   <!-- GDB functionality -->
@@ -9,13 +10,15 @@
   <arg unless="$(arg debug)" name="launch_prefix" value=""/>
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args"/>
 
+  <!-- Simulation -->
   <group if="$(arg sim)">
     <include file="$(find hydra_bringup)/launch/hydra_system_sim.launch">
       <arg name="rviz" value="false"/>
       <arg name="tool" value="$(arg tool)"/>
-    </include> 
+    </include>
   </group>
 
+  <!-- Visualization -->
   <group if="$(arg rviz)">
     <include file="$(find hydra_bringup)/launch/hydra_visualization.launch">
       <arg name="load_robot_description" value="true"/>
@@ -24,6 +27,14 @@
     </include>
   </group>
 
-  <!-- Load Cartesian planning server -->
-  <include file="$(find hydra_sandbox)/launch/cartesian_planning_servers.launch"/>
+  <!-- Execution modes -->
+  <group if="$(eval arg('exec') == 'planning')">
+    <rosparam file="$(find hydra_sandbox)/config/cartesian_planners.yaml" command="load"/>
+    <include file="$(find hydra_sandbox)/launch/cartesian_planning_servers.launch"/>
+  </group>
+
+  <group if="$(eval arg('exec') == 'control')">
+    <include if="$(arg sim)" file="$(find hydra_sandbox)/launch/taskspace_controllers.launch"/>
+    <include file="$(find hydra_sandbox)/launch/schedule_execution_servers.launch"/>
+  </group>
 </launch>

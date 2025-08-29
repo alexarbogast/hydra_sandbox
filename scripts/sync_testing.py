@@ -55,12 +55,13 @@ def two_lines(h) -> Toolpath:
     toolpath.contours = [c1, c2]
     return toolpath
 
+
 def three_lines(h) -> Toolpath:
     toolpath = Toolpath()
 
     p1 = np.array([[0.3, 0.3, h], [-0.3, 0.3, h]])
     p2 = np.array([[0.3, -0.3, h], [-0.3, -0.3, h]])
-    p3 = np.array([[0.3, -0.3, h+0.001], [-0.3, -0.3, h+0.001]])
+    p3 = np.array([[0.3, -0.3, h + 0.001], [-0.3, -0.3, h + 0.001]])
 
     c1 = Contour(p1, 0)
     c2 = Contour(p2, 1)
@@ -68,6 +69,7 @@ def three_lines(h) -> Toolpath:
 
     toolpath.contours = [c1, c2, c1, c3]
     return toolpath
+
 
 def coordinate_frame(h) -> Toolpath:
     toolpath = Toolpath()
@@ -91,9 +93,9 @@ def zig_zags(h) -> Toolpath:
     toolpath = Toolpath()
 
     p11 = raster_rect([0.3, 0.2, h], 0.03, -0.05, 12)
-    p12 = raster_rect([-0.3, 0.2, h], 0.03,  0.05, 12)
+    p12 = raster_rect([-0.3, 0.2, h], 0.03, 0.05, 12)
     p21 = raster_rect([0.3, -0.2, h], 0.03, -0.05, 12)
-    p22 = raster_rect([-0.3, -0.2, h], 0.03,  0.05, 12)
+    p22 = raster_rect([-0.3, -0.2, h], 0.03, 0.05, 12)
 
     c1 = Contour(p11, 0)
     c2 = Contour(p12, 0)

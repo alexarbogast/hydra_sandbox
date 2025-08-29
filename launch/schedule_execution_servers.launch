@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <node ns="rob1" name="schedule_execution_server" pkg="pyrobopath_ros"
+        type="schedule_execution_server.py" output="screen"/>
+  <node ns="rob2" name="schedule_execution_server" pkg="pyrobopath_ros"
+        type="schedule_execution_server.py" output="screen"/>
+</launch>

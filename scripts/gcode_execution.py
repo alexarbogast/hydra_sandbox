@@ -17,9 +17,9 @@ filepaths = {
     "multi_tool_demo": "/resources/multi_tool_demo.gcode",
     "GT_Logo": "/resources/GT_Logo.gcode",
     "gear": "/resources/gear.gcode",
-    "mona_lisa": "/resources/mona_lisa.gcode", # single material
+    "mona_lisa": "/resources/mona_lisa.gcode",  # single material
     "foresight_logo": "/resources/foresight_logo.gcode",
-    "part1_2xbracket": "/resources/part1_2Xbracket.gcode", # single material
+    "part1_2xbracket": "/resources/part1_2Xbracket.gcode",  # single material
     "part6_mold_insert": "/resources/part6_mold_insert.gcode",
 }
 
