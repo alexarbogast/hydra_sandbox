@@ -1,0 +1,23 @@
+rob1:
+  collision_visualization:
+    ros__parameters:
+      eef_frame: rob1_typhoon_extruder_tcp
+
+rob2:
+  collision_visualization:
+    ros__parameters:
+      eef_frame: rob2_typhoon_extruder_tcp
+
+rob3:
+  collision_visualization:
+    ros__parameters:
+      eef_frame: rob3_typhoon_extruder_tcp
+
+/**:
+  ros__parameters:
+    collision:
+      length: 0.5
+      width: 0.17
+      height: 0.5
+
+      offset: [0.02, 0.0, -0.2]

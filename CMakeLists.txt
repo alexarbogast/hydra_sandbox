@@ -1,42 +1,28 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.5)
 project(hydra_sandbox)
 
-if(NOT CMAKE_BUILD_TYPE) 
-  set(CMAKE_BUILD_TYPE Release)
-endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_STANDARD 17)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  sensor_msgs
-  control_msgs
-  actionlib
-  cartesian_planning_server
-  pyrobopath
-)
+find_package(ament_cmake REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(cartesian_planning_server REQUIRED)
 
-catkin_package(CATKIN_DEPENDS
-  roscpp
-  rospy
-  sensor_msgs
-  control_msgs
-  actionlib
-  cartesian_planning_server
-  pyrobopath
-)
-
-include_directories(${catkin_INCLUDE_DIRS})
-
-catkin_install_python(PROGRAMS
-  scripts/cartesian_trajectory_execution.py
-  scripts/schedule_execution.py
+install(PROGRAMS
   scripts/gcode_execution.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  scripts/visualize_collision_geometry.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY
   config
   launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  resources
+  DESTINATION share/${PROJECT_NAME}
 )
+
+ament_package()

@@ -1,0 +1,2 @@
+# Treat gcode files as binary
+*.gcode binary
