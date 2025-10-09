@@ -1,47 +1,49 @@
-namespaces:
-  - rob1
-  - rob2
+pyrobopath_demo:
+  ros__parameters:
+    namespaces:
+      - rob1
+      - rob2
 
-exec_method: cartesian_planning # 'taskspace_control' or 'cartesian_planning'
-retract_height: 0.010
-collision_gap_threshold: 0.003
+    exec_method: cartesian_planning # 'taskspace_control' or 'cartesian_planning'
+    retract_height: 0.010
+    collision_gap_threshold: 0.003
 
-rob1:
-  base_frame: rob1_base_link
-  eef_frame: rob1_marker_tool_tcp
-  task_frame: work_object
+    rob1:
+      base_frame: rob1_base_link
+      eef_frame: rob1_marker_tool_tcp
+      task_frame: work_object
 
-  velocity: 0.050
-  travel_velocity: 0.100
+      velocity: 0.050
+      travel_velocity: 0.100
 
-  eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
-  home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]
+      eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
+      home_position: [0.0, 0.53, 0.47, 0.0, -1.0, 0.0]
 
-  capabilities: [0]
+      capabilities: [0]
 
-  collision:
-    length: 0.5
-    width: 0.17
-    height: 0.5
+      collision:
+        length: 0.5
+        width: 0.17
+        height: 0.5
 
-    offset: [0.02, 0.0, -0.2]
+        offset: [0.02, 0.0, -0.2]
 
-rob2:
-  base_frame: rob2_base_link
-  eef_frame: rob2_marker_tool_tcp
-  task_frame: work_object
+    rob2:
+      base_frame: rob2_base_link
+      eef_frame: rob2_marker_tool_tcp
+      task_frame: work_object
 
-  velocity: 0.050
-  travel_velocity: 0.100
+      velocity: 0.050
+      travel_velocity: 0.100
 
-  eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
-  home_position: [0.0, deg(21), deg(45), 0.0, deg(-66), 0.0]
+      eef_rotation: [0.0, 0.0, 1.0, 0.0] # w, x, y, z
+      home_position: [0.0, 0.53, 0.47, 0.0, -1.0, 0.0]
 
-  capabilities: [1]
+      capabilities: [1]
 
-  collision:
-    length: 0.5
-    width: 0.17
-    height: 0.5
+      collision:
+        length: 0.5
+        width: 0.17
+        height: 0.5
 
-    offset: [0.02, 0.0, -0.2]
+        offset: [0.02, 0.0, -0.2]
