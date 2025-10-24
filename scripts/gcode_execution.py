@@ -27,7 +27,7 @@ from pyrobopath_execution import ScheduleExecution, toolpath_from_gcode
 
 NAME = "pyrobopath_demo"
 
-PART = "gear"
+PART = "GT_Logo"
 Z_HEIGHT = 0.000  # mm
 
 filepaths = {
@@ -90,7 +90,7 @@ class GcodeExecutionDemo(ScheduleExecution):
             preprocessor.add_step(ScalingStep(0.9))
             preprocessor.add_step(LayerRangeStep(0, 1))
         elif PART == "GT_Logo":
-            preprocessor.add_step(ScalingStep(0.9))
+            preprocessor.add_step(ScalingStep(0.75))
             preprocessor.add_step(LayerRangeStep(0, 1))
         elif PART == "gear":
             preprocessor.add_step(LayerRangeStep(0, 1))
