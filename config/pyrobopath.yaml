@@ -29,6 +29,15 @@ pyrobopath_demo:
 
         offset: [0.02, 0.0, -0.2]
 
+      controller: rob1/joint_trajectory_controller
+      joints:
+        - rob1_joint_1
+        - rob1_joint_2
+        - rob1_joint_3
+        - rob1_joint_4
+        - rob1_joint_5
+        - rob1_joint_6
+
     rob2:
       base_frame: rob2_base_link
       eef_frame: rob2_typhoon_extruder_tcp
@@ -50,6 +59,15 @@ pyrobopath_demo:
 
         offset: [0.02, 0.0, -0.2]
 
+      controller: rob2/joint_trajectory_controller
+      joints:
+        - rob2_joint_1
+        - rob2_joint_2
+        - rob2_joint_3
+        - rob2_joint_4
+        - rob2_joint_5
+        - rob2_joint_6
+
     rob3:
       base_frame: rob3_base_link
       eef_frame: rob3_typhoon_extruder_tcp
@@ -70,3 +88,12 @@ pyrobopath_demo:
         height: 0.5
 
         offset: [0.02, 0.0, -0.2]
+
+      controller: rob3/joint_trajectory_controller
+      joints:
+        - rob3_joint_1
+        - rob3_joint_2
+        - rob3_joint_3
+        - rob3_joint_4
+        - rob3_joint_5
+        - rob3_joint_6
